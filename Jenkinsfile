@@ -4,7 +4,7 @@ pipeline {
     environment {
         DOCKERHUB_USERNAME = "2023bcd0056niketh"
         DOCKERHUB_PASSWORD = "dckr_pat_kI906L7-NHbe-rA1SoSn_l-NFvM"
-        EC2_PUBLIC_IP      = '13.61.176.63'
+        EC2_PUBLIC_IP      = '13.61.175.33'
 
         REGISTER_NUMBER    = "na"
         ROLL_NUMBER        = "2023bcd0056"
