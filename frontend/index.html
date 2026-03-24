@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Student Details</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      min-height: 100vh;
+      background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .card {
+      background: rgba(255,255,255,0.05);
+      backdrop-filter: blur(16px);
+      border: 1px solid rgba(255,255,255,0.12);
+      border-radius: 20px;
+      padding: 48px 56px;
+      width: 420px;
+      text-align: center;
+      box-shadow: 0 24px 64px rgba(0,0,0,0.4);
+    }
+
+    .avatar {
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #e94560, #0f3460);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 24px;
+      font-size: 32px;
+      font-weight: 700;
+      color: #fff;
+    }
+
+    h1 {
+      font-size: 26px;
+      font-weight: 700;
+      color: #ffffff;
+      margin-bottom: 6px;
+      letter-spacing: 0.5px;
+    }
+
+    .subtitle {
+      font-size: 13px;
+      color: rgba(255,255,255,0.45);
+      margin-bottom: 36px;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+    }
+
+    .divider {
+      height: 1px;
+      background: rgba(255,255,255,0.1);
+      margin-bottom: 32px;
+    }
+
+    .field {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 14px 0;
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+    }
+
+    .field:last-of-type { border-bottom: none; }
+
+    .label {
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 1.2px;
+      color: rgba(255,255,255,0.4);
+    }
+
+    .value {
+      font-size: 15px;
+      font-weight: 600;
+      color: #e2e8f0;
+    }
+
+    .status {
+      display: inline-block;
+      margin-top: 28px;
+      padding: 8px 20px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+    }
+
+    .status.loading {
+      background: rgba(255,165,0,0.15);
+      color: #ffa500;
+      border: 1px solid rgba(255,165,0,0.3);
+    }
+
+    .status.success {
+      background: rgba(72,199,142,0.15);
+      color: #48c78e;
+      border: 1px solid rgba(72,199,142,0.3);
+    }
+
+    .status.error {
+      background: rgba(233,69,96,0.15);
+      color: #e94560;
+      border: 1px solid rgba(233,69,96,0.3);
+    }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <div class="avatar" id="avatar">N</div>
+    <h1 id="name">Loading...</h1>
+    <p class="subtitle">Student Profile</p>
+    <div class="divider"></div>
+
+    <div class="field">
+      <span class="label">Roll Number</span>
+      <span class="value" id="roll">—</span>
+    </div>
+    <div class="field">
+      <span class="label">Register Number</span>
+      <span class="value" id="reg">—</span>
+    </div>
+    <div class="field">
+      <span class="label">Department</span>
+      <span class="value" id="dept">—</span>
+    </div>
+
+    <span class="status loading" id="status">Fetching data...</span>
+  </div>
+
+  <script>
+    async function fetchStudentDetails() {
+      const statusEl = document.getElementById('status');
+      try {
+        const response = await fetch('/api/student-details');
+        if (!response.ok) throw new Error('Network error');
+        const data = await response.json();
+
+        document.getElementById('name').textContent  = data.name;
+        document.getElementById('roll').textContent  = data.roll_number;
+        document.getElementById('reg').textContent   = data.register_number;
+        document.getElementById('dept').textContent  = data.department;
+        document.getElementById('avatar').textContent = data.name.charAt(0).toUpperCase();
+
+        statusEl.textContent = '● API Connected';
+        statusEl.className   = 'status success';
+      } catch (err) {
+        statusEl.textContent = '✕ Failed to fetch';
+        statusEl.className   = 'status error';
+        console.error(err);
+      }
+    }
+
+    fetchStudentDetails();
+  </script>
+</body>
+</html>
